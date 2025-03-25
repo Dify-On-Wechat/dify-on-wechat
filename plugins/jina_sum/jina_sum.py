@@ -6,6 +6,7 @@ import re
 from urllib.parse import urlparse, quote
 import time
 
+
 import requests
 from newspaper import Article
 import newspaper
