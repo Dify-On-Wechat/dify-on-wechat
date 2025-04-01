@@ -1,7 +1,7 @@
 [
     {
         "app_name": "聊天应用",
-        "app_type": "chatbot",
+        "app_type": "workflow",
         "api_base": "http://www.ddgsm.com.cn/v1",
         "api_key": "app-LSsqC2NOWLO7T6zRjQyFsJej",
         "image_recognition": false,
