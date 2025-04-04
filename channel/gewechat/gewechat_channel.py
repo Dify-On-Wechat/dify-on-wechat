@@ -31,6 +31,8 @@ class GeWeChatChannel(ChatChannel):
             return
         self.token = conf().get("gewechat_token")
         self.client = GewechatClient(self.base_url, self.token)
+        #sunnyzhang add gewechat 需要提前加载进来联系人列表
+        self.contacts_list = {"friends": [], "chatrooms": [], "ghs": []}
 
         # 如果token为空，尝试获取token
         if not self.token:
@@ -89,6 +91,9 @@ class GeWeChatChannel(ChatChannel):
             if callback_resp.get("ret") != 200:
                 logger.error(f"[gewechat] set callback failed: {callback_resp}")
                 return
+            #sunnyzhang add gewechat 需要提前加载进来联系人列表
+            self.contacts_list = self.client.fetch_contacts_list(self.app_id).get("data")
+    
             logger.info("[gewechat] callback set successfully")
 
         callback_thread = threading.Thread(target=set_callback, daemon=True)
@@ -178,6 +183,19 @@ class GeWeChatChannel(ChatChannel):
                 new_img_file_path = TmpDir().path() + str(newMsgId) + extension
                 os.rename(img_file_path, new_img_file_path)
                 logger.info("[gewechat] sendImage rename to {}".format(new_img_file_path))
+
+    def get_chatroom_list(self):
+        chatroom_list = []
+        if self.contacts_list["chatrooms"]:
+            # 获取联系人列表
+            for chatroom_id in self.contacts_list["chatrooms"]:
+                response = self.client.get_chatroom_info(self.app_id, chatroom_id)
+                chatroom_nickname = response.get("data").get("nickName")
+                if chatroom_nickname:
+                    chatroom_list.append({"room_id": chatroom_id, "room_name": chatroom_nickname})
+                else:
+                    chatroom_list.append({"room_id": chatroom_id, "room_name": chatroom_id})
+        return chatroom_list
 
 class Query:
     def GET(self):
