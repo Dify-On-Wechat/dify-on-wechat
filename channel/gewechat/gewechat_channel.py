@@ -186,6 +186,7 @@ class GeWeChatChannel(ChatChannel):
 
     def get_chatroom_list(self):
         chatroom_list = []
+        # 获取群聊列表
         if self.contacts_list["chatrooms"]:
             # 获取联系人列表
             for chatroom_id in self.contacts_list["chatrooms"]:
