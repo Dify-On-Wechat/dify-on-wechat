@@ -32,7 +32,7 @@ class GeWeChatChannel(ChatChannel):
         self.token = conf().get("gewechat_token")
         self.client = GewechatClient(self.base_url, self.token)
         #sunnyzhang add gewechat 需要提前加载进来联系人列表
-        self.contacts_list = {"friends": [], "chatrooms": [], "ghs": []}
+        self.contacts_list = {}
 
         # 如果token为空，尝试获取token
         if not self.token:
@@ -186,6 +186,8 @@ class GeWeChatChannel(ChatChannel):
 
     def get_chatroom_list(self):
         chatroom_list = []
+        if not self.contacts_list:
+            self.contacts_list = self.client.fetch_contacts_list(self.app_id).get("data")
         # 获取群聊列表
         if self.contacts_list["chatrooms"]:
             # 获取联系人列表
@@ -196,6 +198,7 @@ class GeWeChatChannel(ChatChannel):
                     chatroom_list.append({"room_id": chatroom_id, "room_name": chatroom_nickname})
                 else:
                     chatroom_list.append({"room_id": chatroom_id, "room_name": chatroom_id})
+
         return chatroom_list
 
 class Query:
