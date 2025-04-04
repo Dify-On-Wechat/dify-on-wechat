@@ -200,6 +200,33 @@ class GeWeChatChannel(ChatChannel):
                     chatroom_list.append({"room_id": chatroom_id, "room_name": chatroom_id})
 
         return chatroom_list
+    
+    def get_group_id_by_title(self, group_title):
+        group_id = None
+        # if not self.contacts_list:
+        #     self.contacts_list = self.client.fetch_contacts_list(self.app_id).get("data")
+        # 获取群聊列表
+        if self.contacts_list["chatrooms"]:
+            # 获取联系人列表
+            for chatroom_id in self.contacts_list["chatrooms"]:
+                response = self.client.get_chatroom_info(self.app_id, chatroom_id)
+                chatroom_nickname = response.get("data").get("nickName")
+                if chatroom_nickname == group_title:
+                    group_id = chatroom_id
+                    break
+        if group_id == None:
+            # 如果没有找到群聊，尝试更新联系人清单，进行实时更新
+            self.contacts_list = self.client.fetch_contacts_list(self.app_id).get("data")
+            # 获取群聊列表
+            if self.contacts_list["chatrooms"]:
+                # 获取联系人列表
+                for chatroom_id in self.contacts_list["chatrooms"]:
+                    response = self.client.get_chatroom_info(self.app_id, chatroom_id)
+                    chatroom_nickname = response.get("data").get("nickName")
+                    if chatroom_nickname == group_title:
+                        group_id = chatroom_id
+                        break
+        return group_id
 
 class Query:
     def GET(self):
