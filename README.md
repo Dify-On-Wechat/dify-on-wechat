@@ -246,11 +246,22 @@ python app.py
 
 配置详情请查看 [CustomDifyApp](https://github.com/hanfangyuan4396/dify-on-wechat/tree/master/plugins/custom_dify_app)
 
-## 6. 支持Dify Chatflow & Workflow
+## 6. 股票分析插件（StockAnalysis）
+
+plugins/stock_analysis 提供了基于 TuShare 的行情 + 资金行为 + 机构持仓分析：
+
+1. 在 TuShare 申请 Token，并写入 plugins/stock_analysis/config.json（可复制 config.json.template）。
+2. 安装 	ushare>=1.2.94（位于 
+3. 在聊天窗口输入 #stock 600519、#股票 000001.SZ，或直接输入 #stock 贵州茅台 等名称，即可获得基础行情、连续一周的持仓推演、昨日/三日/更早离场资金占比、成本&盈亏区间、平均持仓周期、主力净流占比以及机构持仓变化。
+3. 在聊天窗口输入 #stock 600519 或 #股票 000001.SZ，即可获得基础行情、连续一周的持仓推演、昨日/三日/更早离场资金占比、成本&盈亏区间、平均持仓周期、主力净流占比以及机构持仓变化。
+
+插件算法会把最近 1+ 周的成交量映射为“持仓池”，结合当日成交额逐层推断出场资金的来源，直到覆盖全部成交量；同时还能按需统计机构增减仓情况。
+
+## 7. 支持Dify Chatflow & Workflow
 dify官网已正式上线工作流模式，可以导入本项目下的[dsl文件](./dsl/chat-workflow.yml)快速创建工作流进行测试。工作流输入变量名称十分灵活，对于**工作流类型**的应用，本项目**约定工作流的输入变量命名为`query`**，**输出变量命名为`text`**。
 
 (ps: 感觉工作流类型应用不太适合作为聊天机器人，现在它还没有会话的概念，需要自己管理上下文。但是它可以调用各种工具，通过http请求和外界交互，适合执行业务逻辑复杂的任务；它可以导入导出工作流dsl文件，方便分享移植。也许以后dsl文件+配置文件就可以作为本项目的一个插件。)
-## 7. 支持COZE API
+## 8. 支持COZE API
 
 <div align="center">
 <img width="700" src="./docs/images/image5.jpg">
@@ -293,7 +304,7 @@ python3 app.py                                    # windows环境下该命令通
 
 特别感谢 [**@绛烨**](https://github.com/jiangye520) 提供内测coze api key
 
-## 8. 支持dify voice
+## 9. 支持dify voice
 
 dify语音相关配置如下，另外需要在dify应用中开启语音转文字以及文字转语音功能，注意语音功能需要**安装ffmpeg依赖**
 
@@ -319,7 +330,7 @@ dify语音相关配置如下，另外需要在dify应用中开启语音转文字
 </div>
 
 
-## 9. 支持dify图片识别
+## 10. 支持dify图片识别
 
 dify图片识别配置如下，另外需要在dify应用中开启图片上传与图片理解功能。使用方法为，**先发送图片**，然后**在3分钟内发送关于图片的问题**，注意先后顺序。
 
@@ -332,7 +343,7 @@ dify图片识别配置如下，另外需要在dify应用中开启图片上传与
 }
 ```
 
-## 10. 支持deepseek
+## 11. 支持deepseek
 
 deepseek和openai可以共用一套api lib，，默认model是`deepseek-chat`
 ```json

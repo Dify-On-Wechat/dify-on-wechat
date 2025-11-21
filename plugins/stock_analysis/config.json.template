@@ -1,0 +1,9 @@
+{
+    "command_prefixes": ["#stock", "#股票"],
+    "history_limit": 5,
+    "analysis_days": 7,
+    "analysis_windows": [1, 3, 5, 10],
+    "enable_institution": true,
+    "tushare_token": "在 TuShare 官网申请的 Token"
+}
+

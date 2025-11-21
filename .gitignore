@@ -35,6 +35,8 @@ plugins/banwords/lib/__pycache__
 !plugins/jina_sum/**/
 !plugins/custom_dify_app
 !plugins/group_at_autoreply
+!plugins/stock_analysis
+!plugins/stock_analysis/**/
 client_config.json
 gewechat/
 
